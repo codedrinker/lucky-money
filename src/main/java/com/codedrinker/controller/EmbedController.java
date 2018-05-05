@@ -4,8 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
 
 /**
@@ -18,9 +23,14 @@ public class EmbedController {
 
     @RequestMapping(value = "/embed", method = RequestMethod.GET)
     public String embed(Model model, @RequestParam() String url) {
-        logger.info("access url -> {}", url);
-        luckyMoneyCache.incCount(url);
-        model.addAttribute("src", url);
+        try {
+            String decode = URLDecoder.decode(url, "UTF-8");
+            logger.info("access url -> {}", decode);
+            luckyMoneyCache.incCount(decode);
+            model.addAttribute("src", decode);
+            return "embed";
+        } catch (UnsupportedEncodingException e) {
+        }
         return "embed";
     }
 
