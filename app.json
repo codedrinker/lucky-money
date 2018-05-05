@@ -1,0 +1,7 @@
+{
+  "name": "lucky-money",
+  "description": "lucky-money",
+  "addons": [
+    "cleardb:ignite"
+  ]
+}
